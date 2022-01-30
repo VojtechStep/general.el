@@ -2628,7 +2628,8 @@ Return something like '((some-command-to-autoload . command) ...)."
      (use-package-process-keywords name rest state)
      `(,@(mapcar (lambda (arglist)
                    ;; Note: prefix commands are not valid functions
-                   (if (or (functionp (car arglist))
+                   (if (or (and (functionp (car arglist))
+                                (not (eq 'insert (car arglist))))
                            (macrop (car arglist)))
                        `(,@arglist :package ',name)
                      `(general-def
